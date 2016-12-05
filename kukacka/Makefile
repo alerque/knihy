@@ -30,6 +30,10 @@ out/%.pdf: %.sil | $(MAKEFILE_LIST)
 %.sil: | $(CHAPTERS) $(MAKEFILE_LIST)
 	cat <<- EOF > $@
 		\begin[papersize=a5,class=markdown]{document}
+		\language[main=pl]
+		\define[command=book:chapterfont]{\font[family=Antykwa Torunska,size=22pt]{\process}}
+		\define[command=book:sectionfont]{\font[family=Antykwa Torunska,size=18pt]{\process}}
+		\font[language=pl,family=Iwona,size=12pt]
 		\begin{obeylines}$(foreach CHAPTER,$(CHAPTERS),
 		\include[src=$(CHAPTER)])
 		\end{obeylines}
