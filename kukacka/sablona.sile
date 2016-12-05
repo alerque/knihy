@@ -1,0 +1,14 @@
+\begin[papersize=a5,class=book]{document}
+\language[main=pl]
+\set[parameter=document.parindent,value=0pt]
+\define[command=show-multilevel-counter]{}
+\define[command=book:section:post]{}
+\define[command=book:subsection:post]{}
+\script[src=packages/image]
+\define[command=rule]{}
+\define[command=book:chapterfont]{\font[family=Antykwa Torunska,size=22pt]{\process}}
+\define[command=book:sectionfont]{\font[family=Antykwa Torunska,size=18pt]{\process}}
+\font[language=pl,size=12pt,family=Iwona]
+\tableofcontents
+$body$
+\end{document}
