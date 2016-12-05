@@ -2,6 +2,8 @@ CHAPTERS = meta.md pro-kukacku.md hrdlicka.md pod-vlivem.md tiraz.md
 
 .PHONY: all clean
 .PRECIOUS: out/%.html out/%.epub out/%.pdf
+.ONESHELL:
+SHELL = bash
 
 all: html epub pdf
 
@@ -16,8 +18,20 @@ out/%.html: | $(CHAPTERS) meta.yml style-html.css $(MAKEFILE_LIST)
 out/%.epub: | $(CHAPTERS) meta.yml $(MAKEFILE_LIST)
 	pandoc -o $@ -s meta.yml $(CHAPTERS)
 
-out/%.pdf: %.tex | $(MAKEFILE_LIST)
-	context $< --batch-mode --purgeresult --result=$@
+# out/%.pdf: %.tex | $(MAKEFILE_LIST)
+#      context $< --batch-mode --purgeresult --result=$@
+
+out/%.pdf: %.sil | $(MAKEFILE_LIST)
+	sile $^ -o $@
 
 %.tex: | $(CHAPTERS) meta.yml sablona.contex $(MAKEFILE_LIST)
 	pandoc -o $@ -t context --toc --self-contained --template=sablona.contex -s meta.yml $(CHAPTERS)
+
+%.sil: | $(CHAPTERS) $(MAKEFILE_LIST)
+	cat <<- EOF > $@
+		\begin[papersize=a5,class=markdown]{document}
+		\begin{obeylines}$(foreach CHAPTER,$(CHAPTERS),
+		\include[src=$(CHAPTER)])
+		\end{obeylines}
+		\end{document}
+	EOF
